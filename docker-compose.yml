@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/apache/Dockerfile
+      target: production
     container_name: app_apache
     restart: always
     ports:
@@ -17,6 +18,23 @@ services:
       - .env
     networks:
       - app_network
+    profiles:
+      - production
+
+  # service for running tests
+  app_test:
+    build:
+      context: .
+      dockerfile: ./docker/apache/Dockerfile
+      target: test
+    container_name: app_test
+    networks:
+      - app_network
+    profiles:
+      - test
+      - integration
+    env_file:
+      - .env.test
 
   mysql:
     image: mysql:8.0
@@ -39,10 +57,7 @@ services:
     profiles:
       - production
       - development
-  
-  # database for integration
-  # database files are on a tempfs so there's lower
-  # latency due to io
+
   mysql_integration:
     image: mysql:8.0
     container_name: app_mysql_integration
@@ -80,6 +95,9 @@ services:
       - .env
     networks:
       - app_network
+    profiles:
+      - production
+      - development
 
 volumes:
   mysql_data:

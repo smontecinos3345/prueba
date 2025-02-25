@@ -29,7 +29,7 @@ class RegisterUserUseCase
         $other = $this->userRepositoryInterface->findByEmail($email);
 
         if ($other !== null) {
-            throw new UserAlreadyExistsException("there's already an user for the email");
+            throw new UserAlreadyExistsException("email is taken");
         }
 
         $this->userRepositoryInterface->save($user);

@@ -84,4 +84,9 @@ class DoctrineUserRepository implements UserRepositoryInterface
             createdAt: !empty($row['created_at']) ? new \DateTimeImmutable($row['created_at']) : null,
         );
     }
+
+    public function getConnection(): Connection
+    {
+        return $this->connection;
+    }
 }
