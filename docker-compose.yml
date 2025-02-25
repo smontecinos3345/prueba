@@ -3,8 +3,8 @@ version: "3.8"
 services:
   apache:
     build:
-      context: ./docker/apache
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./docker/apache/Dockerfile
     container_name: app_apache
     restart: always
     ports:
