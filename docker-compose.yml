@@ -1,0 +1,88 @@
+version: "3.8"
+
+services:
+  apache:
+    build:
+      context: ./docker/apache
+      dockerfile: Dockerfile
+    container_name: app_apache
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./php.ini:/usr/local/etc/php/php.ini
+    depends_on:
+      - mysql
+    env_file:
+      - .env
+    networks:
+      - app_network
+
+  mysql:
+    image: mysql:8.0
+    container_name: app_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    env_file:
+      - .env
+    networks:
+      - app_network
+    profiles:
+      - production
+      - development
+  
+  # database for integration
+  # database files are on a tempfs so there's lower
+  # latency due to io
+  mysql_integration:
+    image: mysql:8.0
+    container_name: app_mysql_integration
+    restart: always
+    env_file:
+      - .env.test
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3307:3306"
+    tmpfs:
+      - /var/lib/mysql
+    networks:
+      - app_network
+    profiles:
+      - integration
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: app_phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: ${MYSQL_USER}
+      PMA_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+    env_file:
+      - .env
+    networks:
+      - app_network
+
+volumes:
+  mysql_data:
+
+networks:
+  app_network:
+    driver: bridge

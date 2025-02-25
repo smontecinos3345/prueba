@@ -1,0 +1,17 @@
+{
+    "name": "smontecinos/prueba",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sergio Montecinos",
+            "email": "smontecinos695@gmail.com"
+        }
+    ],
+    "require": {
+        "doctrine/orm": "^3.3"
+    }
+}
