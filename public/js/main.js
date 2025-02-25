@@ -22,7 +22,8 @@ document.getElementById("registerForm").addEventListener("submit", async functio
     const response = await fetch('/users', {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Accept": "application/json"
       },
       body: JSON.stringify(formData)
     });
@@ -32,7 +33,7 @@ document.getElementById("registerForm").addEventListener("submit", async functio
       throw new Error(errorData.message || "Registration failed");
     }
 
-    // window.location.href = "/thankyou.html";
+    window.location.href = "/thankyou.html";
   } catch (error) {
     Swal.fire({
       icon: 'error',

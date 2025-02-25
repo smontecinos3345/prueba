@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\NotFoundException;
 use App\Http\Request;
 
 class Kernel
@@ -20,7 +21,7 @@ class Kernel
         $route = $request->getMethod() . ' ' . $request->getUri();
 
         if (!isset($this->routes[$route])) {
-            throw new \Exception("Route not found: $route");
+            throw new NotFoundException("Route not found: $route");
         }
 
         $controllerClass = $this->container->get($this->routes[$route]);
