@@ -4,4 +4,4 @@ namespace App\Domain\Exception;
 
 use Exception;
 
-class WeakPasswordException extends Exception {}
+class InvalidNameException extends Exception {}
