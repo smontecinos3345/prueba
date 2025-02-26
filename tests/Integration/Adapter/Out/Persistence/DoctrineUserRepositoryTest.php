@@ -47,7 +47,7 @@ class DoctrineUserRepositoryTest extends TestCase
         $this->assertSame((string) $user->name, (string) $retrievedUser->name);
         $this->assertSame((string) $user->email, (string) $retrievedUser->email);
         $this->assertTrue($user->password->verify($plainTextPassword), 'password should match!');
-        $this->assertNotNull($retrievedUser->createdAt, '');
+        $this->assertNotNull($retrievedUser->createdAt, 'createdAt is populated in databae!');
     }
 
     private function getRepository(): UserRepositoryInterface {

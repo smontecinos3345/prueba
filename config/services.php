@@ -1,5 +1,15 @@
 <?php
 
+// config/services.php
+
+/*
+ * Sets up service bindings for dependency injection.
+ * 
+ * - Wires up UserRepositoryInterface to use Doctrine.
+ * - Registers an EventDispatcher with event handlers.
+ * - Uses the container to resolve dependencies on the fly.
+ */
+
 use App\Adapter\Out\Event\EventDispatcher;
 use App\Adapter\Out\Event\UserRegisteredEventHandler;
 use App\Adapter\Out\Persistence\DoctrineUserRepository;

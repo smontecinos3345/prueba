@@ -82,6 +82,11 @@ class Password
         return $this->hash;
     }
 
+    /**
+     * Creates a password from a hash. This is used for hydrating a password
+     * comming from storage.
+     * @return self
+     */
     public static function fromHash(string $storedHash): self
     {
         $salt = substr($storedHash, 0, 32);

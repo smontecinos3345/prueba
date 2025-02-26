@@ -6,10 +6,20 @@ use Exception;
 use ReflectionClass;
 use ReflectionParameter;
 
+/**
+ * A simple dependency injection container for auto-wiring services in the application.
+ *
+ * This container allows for automatic resolution of dependencies using reflection.
+ * It can instantiate classes and resolve their constructor dependencies recursively.
+ */
 class Container
 {
     private array $factories;
 
+    /**
+     * @param array<string,callable> Array of factories for registered services.
+     * Factories are used to instantiate and associate the correct adapter with its corresponding port.
+     */
     public function __construct(array $factories = [])
     {
         $this->factories = $factories;
@@ -32,7 +42,9 @@ class Container
     private function instantiate(string $class)
     {
         $refl = new ReflectionClass($class);
-    
+
+        // If someone is asking for the container, although discouraged, return
+        // itself as containers can't instance themselves.
         if ($class === get_class($this)) {
             return $this;
         }
@@ -60,6 +72,9 @@ class Container
     {
         $type = $parameter->getType();
 
+        // can't resolve primitive types
+        // consumer should use a factory to inject those values
+        // possibly reusing the container to get solvable dependencies
         if (!$type || $type->isBuiltin()) {
             throw new \Exception("Cannot resolve dependency: {$type}");
         }
