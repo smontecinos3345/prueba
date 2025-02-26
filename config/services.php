@@ -1,11 +1,12 @@
 <?php
 
+use App\Adapter\Out\Event\EventDispatcher;
+use App\Adapter\Out\Event\UserRegisteredEventHandler;
 use App\Adapter\Out\Persistence\DoctrineUserRepository;
 use App\Container;
+use App\Domain\Event\EventDispatcherInterface;
 use App\Domain\Event\UserRegisteredEvent;
-use App\Domain\Event\UserRegisteredEventHandler;
 use App\Domain\Repository\UserRepositoryInterface;
-use App\EventDispatcher;
 use Doctrine\DBAL\DriverManager;
 
 $secrets = require_once __DIR__ . '/secrets.php';
@@ -33,7 +34,7 @@ return [
         ]);
         return new DoctrineUserRepository($connection);
     },
-    EventDispatcher::class => function (Container $container) {
+    EventDispatcherInterface::class => function (Container $container) {
         return new EventDispatcher([
             UserRegisteredEvent::class => createEventHandler(UserRegisteredEventHandler::class, $container),
         ]);

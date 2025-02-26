@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Domain\Event;
+namespace App\Adapter\Out\Event;
+
+use App\Domain\Event\UserRegisteredEvent;
 
 class UserRegisteredEventHandler
 {

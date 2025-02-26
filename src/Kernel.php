@@ -2,8 +2,8 @@
 
 namespace App;
 
-use App\Http\NotFoundException;
-use App\Http\Request;
+use App\Adapter\In\Http\NotFoundException;
+use App\Adapter\In\Http\Request;
 
 class Kernel
 {

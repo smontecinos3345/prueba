@@ -2,20 +2,21 @@
 
 namespace App\Application\UseCase;
 
+use App\Application\Request\RegisterUserRequest;
 use App\Domain\Entity\User;
+use App\Domain\Event\EventDispatcherInterface;
 use App\Domain\Event\UserRegisteredEvent;
 use App\Domain\Exception\UserAlreadyExistsException;
 use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\ValueObject\Email;
 use App\Domain\ValueObject\Name;
 use App\Domain\ValueObject\Password;
-use App\EventDispatcher;
 
 class RegisterUserUseCase
 {
     public function __construct(
         private UserRepositoryInterface $userRepositoryInterface,
-        private EventDispatcher $dispatcher,
+        private EventDispatcherInterface $dispatcher,
     ) {}
 
     public function handle(RegisterUserRequest $registerUserRequest)

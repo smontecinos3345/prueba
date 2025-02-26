@@ -1,14 +1,16 @@
 <?php
 
-namespace App;
+namespace App\Adapter\Out\Event;
 
-class EventDispatcher
+use App\Domain\Event\EventDispatcherInterface;
+
+class EventDispatcher implements EventDispatcherInterface
 {
     public function __construct(
         private array $handlers,
     ) {}
 
-    public function dispatch($event)
+    public function dispatch(object $event): void
     {
         $type = get_class($event);
 
@@ -16,7 +18,7 @@ class EventDispatcher
             return;
         }
 
-        return $this->handlers[$type]($event);
+        $this->handlers[$type]($event);
     }
 
     public function addHandler($class, $handler)

@@ -2,15 +2,14 @@
 
 namespace Tests\Unit\Application\UseCase;
 
-use App\Application\UseCase\RegisterUserRequest;
+use App\Application\Request\RegisterUserRequest;
 use App\Application\UseCase\RegisterUserUseCase;
 use App\Domain\Entity\User;
+use App\Domain\Event\EventDispatcherInterface;
 use App\Domain\Event\UserRegisteredEvent;
 use App\Domain\Exception\UserAlreadyExistsException;
 use App\Domain\Repository\UserRepositoryInterface;
-use App\Domain\ValueObject\Email;
 use App\Domain\ValueObject\UserId;
-use App\EventDispatcher;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -48,7 +47,7 @@ class RegisterUserUseCaseTest extends TestCase
     public function testDuplicateEmailThrowsException(): void
     {
         $repository = $this->createMockRepository();
-        $dispatcher = $this->createMock(EventDispatcher::class);
+        $dispatcher = $this->createMock(EventDispatcherInterface::class);
         $useCase = new RegisterUserUseCase($repository, $dispatcher);
 
         $request = new RegisterUserRequest('foo123', 'foo.smith@email.com', 'P@ssw0rd!');
@@ -61,7 +60,7 @@ class RegisterUserUseCaseTest extends TestCase
     public function testEventIsDispatchedOnUserRegistration(): void
     {
         $repository = $this->createMockRepository();
-        $dispatcher = $this->createMock(EventDispatcher::class);
+        $dispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $dispatcher->expects($this->once())
             ->method('dispatch')

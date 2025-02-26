@@ -4,8 +4,8 @@
 @ini_set('display_errors', 1);
 
 use App\Container;
-use App\Http\JsonRequest;
-use App\Http\NotFoundException;
+use App\Adapter\In\Http\JsonRequest;
+use App\Adapter\In\Http\NotFoundException;
 use App\Kernel;
 
 function sendResponse($code, $ex)

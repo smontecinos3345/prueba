@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http;
+namespace App\Adapter\In\Http;
 
 class JsonRequest implements Request
 {

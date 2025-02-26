@@ -2,10 +2,10 @@
 
 namespace App\Adapter\In\Controller;
 
-use App\Application\UseCase\RegisterUserRequest;
+use App\Adapter\In\Http\Request;
+use App\Application\DTO\UserResponseDTO;
+use App\Application\Request\RegisterUserRequest;
 use App\Application\UseCase\RegisterUserUseCase;
-use App\Application\UseCase\UserResponseDTO;
-use App\Http\Request;
 
 class RegisterUserController
 {
