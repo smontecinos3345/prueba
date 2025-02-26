@@ -1,12 +1,15 @@
 .PHONY: up down test unit integration
 
-all:
+build:
 	docker compose --profile production build
 	docker compose --profile development build
 	docker compose --profile test build
 	docker compose --profile integration build
 up:
-	docker compose up -d apache mysql phpmyadmin
+	docker compose up -d apache mysql
+
+dev:
+	docker compose --profile development up
 
 down:
 	docker compose down -v

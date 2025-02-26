@@ -7,11 +7,12 @@ services:
       dockerfile: ./docker/apache/Dockerfile
       target: production
     container_name: app_apache
-    restart: always
+    restart: unless-stopped
     ports:
       - "8080:80"
     volumes:
       - ./php.ini:/usr/local/etc/php/php.ini
+      - ./:/var/www/html
     depends_on:
       - mysql
     env_file:
@@ -20,6 +21,49 @@ services:
       - app_network
     profiles:
       - production
+      - development
+
+  mysql:
+    image: mysql:8.0
+    container_name: app_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d # initialize the database with the schema
+    env_file:
+      - .env
+    networks:
+      - app_network
+    profiles:
+      - production
+      - development
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: app_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: ${MYSQL_USER}
+      PMA_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+    env_file:
+      - .env
+    networks:
+      - app_network
+    profiles:
+      - production
+      - development
 
   # service for running tests
   app_test:
@@ -36,32 +80,11 @@ services:
     env_file:
       - .env.test
 
-  mysql:
-    image: mysql:8.0
-    container_name: app_mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-      - ./mysql/init:/docker-entrypoint-initdb.d
-    env_file:
-      - .env
-    networks:
-      - app_network
-    profiles:
-      - production
-      - development
-
+  # separate database for running integration tests
   mysql_integration:
     image: mysql:8.0
     container_name: app_mysql_integration
-    restart: always
+    restart: unless-stopped
     env_file:
       - .env.test
     environment:
@@ -79,25 +102,6 @@ services:
       - integration
     volumes:
       - ./mysql/init:/docker-entrypoint-initdb.d
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: app_phpmyadmin
-    restart: always
-    environment:
-      PMA_HOST: mysql
-      PMA_USER: ${MYSQL_USER}
-      PMA_PASSWORD: ${MYSQL_PASSWORD}
-    ports:
-      - "8081:80"
-    depends_on:
-      - mysql
-    env_file:
-      - .env
-    networks:
-      - app_network
-    profiles:
-      - production
-      - development
 
 volumes:
   mysql_data:
