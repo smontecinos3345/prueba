@@ -84,7 +84,7 @@ make integration
 If your shell supports it, to suppress docker compose logs and see only phpunit output run:
 
 ```sh
-make unit 2>/dev/null
+make integration 2>/dev/null
 ```
 
 The previous command will start the testing database service and run the command for running integration test inside app_test. app_test will wait for the database to be up and fail after a 30 seconds timeout.
@@ -105,3 +105,8 @@ To remove all containers, images, and volumes (full cleanup):
 make clean
 ```
 ---
+
+
+# See it in action.
+
+![Demo](doc/demo.gif)
