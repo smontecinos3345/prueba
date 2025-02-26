@@ -2,6 +2,7 @@
 
 namespace App\Domain\ValueObject;
 
+use App\Domain\Exception\InputTooLongException;
 use App\Domain\Exception\InvalidEmailException;
 
 class Email
@@ -20,6 +21,10 @@ class Email
     {
         if (!preg_match(self::EMAIL_REGEX, $email)) {
             throw new InvalidEmailException();
+        }
+
+        if (strlen($email) > 100) {
+            throw new InputTooLongException("password is too long!");
         }
     }
 

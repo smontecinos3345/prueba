@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Domain\ValueObject;
 
+use App\Domain\Exception\InputTooLongException;
 use App\Domain\ValueObject\Name;
 use App\Domain\Exception\InvalidNameException;
 use PHPUnit\Framework\TestCase;
@@ -51,5 +52,12 @@ class NameTest extends TestCase
     {
         $this->expectException(InvalidNameException::class);
         new Name('john#doe');
+    }
+
+    public function testRejectsLongUserNames()
+    {
+        $this->expectException(InputTooLongException::class);
+        $name = 'f' . str_repeat('o', 100) . '_user';
+        new Name($name);
     }
 }

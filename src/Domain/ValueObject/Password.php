@@ -2,6 +2,7 @@
 
 namespace App\Domain\ValueObject;
 
+use App\Domain\Exception\InputTooLongException;
 use App\Domain\Exception\WeakPasswordException;
 
 class Password
@@ -48,6 +49,10 @@ class Password
 
     public static function create(string $plainPassword, ?string $salt = null): self
     {
+
+        if (strlen($plainPassword) > 100) {
+            throw new InputTooLongException("password is too long!");
+        }
 
         self::checkPasswordStrength($plainPassword);
 

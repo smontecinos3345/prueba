@@ -2,6 +2,7 @@
 
 namespace App\Domain\ValueObject;
 
+use App\Domain\Exception\InputTooLongException;
 use App\Domain\Exception\InvalidNameException;
 
 class Name
@@ -18,6 +19,10 @@ class Name
     {
         if (strlen($name) < 4) {
             throw new InvalidNameException("name is too short");
+        }
+
+        if (strlen($name) >  100) {
+            throw new InputTooLongException("name is too long (max 100)");
         }
 
         if (!preg_match('/^[a-zA-Z0-9._]+$/', $name)) {

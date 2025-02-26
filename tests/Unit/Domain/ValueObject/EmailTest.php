@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Domain\ValueObject;
 
+use App\Domain\Exception\InputTooLongException;
 use App\Domain\ValueObject\Email;
 use App\Domain\Exception\InvalidEmailException;
 use PHPUnit\Framework\TestCase;
@@ -28,5 +29,13 @@ class EmailTest extends TestCase
     {
         $email = new Email('user@domain.com');
         $this->assertSame('user@domain.com', (string) $email);
+    }
+
+    public function testRejectsLongEmails()
+    {
+
+        $this->expectException(InputTooLongException::class);
+        $input = 'user' . '@' . str_repeat('o', 100, ) . 'main.com';
+        new Email($input);
     }
 }

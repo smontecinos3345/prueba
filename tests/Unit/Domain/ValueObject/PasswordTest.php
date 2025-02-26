@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Domain\ValueObject;
 
+use App\Domain\Exception\InputTooLongException;
 use App\Domain\ValueObject\Password;
 use App\Domain\Exception\WeakPasswordException;
 use PHPUnit\Framework\TestCase;
@@ -15,6 +16,13 @@ class PasswordTest extends TestCase
     {
         $password = Password::create('StrongP@ss1');
         $this->assertInstanceOf(Password::class, $password);
+    }
+
+    public function testPasswordTooLong()
+    {
+        $plainTextPassword = str_repeat('*', 101);
+        $this->expectException(InputTooLongException::class);
+        Password::create($plainTextPassword);
     }
 
     public function testWeakPasswordThrowsException()
