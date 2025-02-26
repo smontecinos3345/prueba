@@ -1,9 +1,12 @@
 .PHONY: up down test unit integration
 
 build:
+	docker compose --profile production pull
 	docker compose --profile production build
+	docker compose --profile development pull
 	docker compose --profile development build
 	docker compose --profile test build
+	docker compose --profile integration pull
 	docker compose --profile integration build
 up:
 	docker compose --profile production up
