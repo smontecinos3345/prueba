@@ -112,7 +112,7 @@ To run the app do the following:
 
 * Build the project using make build
 * start the services by using either make dev or make up
-* Go to http://localhost:8080/users.html
+* Go to http://localhost:8080/
 
 # See it in action.
 

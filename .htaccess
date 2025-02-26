@@ -1,5 +1,7 @@
 RewriteEngine On
 
+RewriteRule ^$ /users.html [L,R=302]
+
 RewriteCond %{DOCUMENT_ROOT}/public/$1 -f
 RewriteRule ^(.*)$ public/$1 [L]
 
