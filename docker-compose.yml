@@ -12,7 +12,6 @@ services:
       - "8080:80"
     volumes:
       - ./php.ini:/usr/local/etc/php/php.ini
-      - ./:/var/www/html
     depends_on:
       - mysql
     env_file:
