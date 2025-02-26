@@ -6,7 +6,7 @@ build:
 	docker compose --profile test build
 	docker compose --profile integration build
 up:
-	docker compose up -d apache mysql
+	docker compose --profile production up
 
 dev:
 	docker compose --profile development up
